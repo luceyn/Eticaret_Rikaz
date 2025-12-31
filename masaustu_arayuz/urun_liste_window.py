@@ -12,23 +12,18 @@ class UrunListeWindow(QWidget):
 
     def initUI(self):
         ana_layout = QVBoxLayout()
-        # 🔍 ARAMA ALANI
         self.text_arama = QLineEdit()
         self.text_arama.setPlaceholderText("Ürün adı / etiket / tür ara...")
         self.text_arama.textChanged.connect(self.urunleri_yukle)
         ana_layout.addWidget(self.text_arama)
-        # 🔍 Arama & Filtre Alanı
         filtre_layout = QHBoxLayout()
 
         self.txt_ara = QLineEdit()
         self.txt_ara.setPlaceholderText("Ürün adı ara...")
-
         self.combo_tur = QComboBox()
         self.combo_tur.addItems(["Hepsi", "Aksesuar", "Dış Giyim", "takımlar", "Kış Koleksiyonu", "Kitap", "Çanta"])
-
         self.combo_cinsiyet = QComboBox()
         self.combo_cinsiyet.addItems(["Hepsi", "Kadın", "Erkek", "Unisex"])
-
         self.combo_renk = QComboBox()
         self.combo_renk.addItems(["Hepsi", "Siyah", "Beyaz", "Kırmızı", "Mavi"])
 
@@ -59,16 +54,12 @@ class UrunListeWindow(QWidget):
     def urunleri_yukle(self):
         self.temizle()
         sorgu = {}
-
-    # 🔍 ARAMA
         if self.text_arama.text():
            sorgu["$or"] = [
                {"ad": {"$regex": self.text_arama.text(), "$options": "i"}},
                {"etiketler": {"$regex": self.text_arama.text(), "$options": "i"}},
                {"tur": {"$regex": self.text_arama.text(), "$options": "i"}}
            ]
-
-    # 🎯 FİLTRELER
         if self.combo_tur.currentText() != "Hepsi":
             sorgu["tur"] = self.combo_tur.currentText()
 
@@ -103,8 +94,7 @@ class UrunListeWindow(QWidget):
         """)
 
         layout = QVBoxLayout()
-
-        # 🖼️ RESİM
+        
         lbl_resim = QLabel()
         lbl_resim.setFixedSize(180, 140)
         lbl_resim.setAlignment(Qt.AlignCenter)
@@ -118,7 +108,6 @@ class UrunListeWindow(QWidget):
         else:
             lbl_resim.setText("Resim yok")
 
-        # 📦 BİLGİLER
         lbl_ad = QLabel(urun["ad"])
         lbl_ad.setAlignment(Qt.AlignCenter)
         lbl_ad.setStyleSheet("font-weight: bold;")
@@ -130,7 +119,6 @@ class UrunListeWindow(QWidget):
         layout.addWidget(lbl_ad)
         layout.addWidget(lbl_fiyat)
 
-        # 🔴 ADMIN KONTROLLERİ
         if self.user.get("role") == "admin":
             btn_sil = QPushButton("Sil")
             btn_sil.clicked.connect(lambda: self.sil(urun["_id"]))
@@ -192,7 +180,6 @@ class UrunListeWindow(QWidget):
         
         from veritabani.db import carts
         def sepete_ekle(self, urun):
-    # kullanıcı sepeti var mı?
             sepet = carts.find_one({"user_id": self.user["_id"]})
 
             if not sepet:
@@ -206,7 +193,6 @@ class UrunListeWindow(QWidget):
                     }]
                 })
             else:
-        # ürün sepette var mı?
                 for item in sepet["items"]:
                     if item["product_id"] == urun["_id"]:
                         carts.update_one(
@@ -231,3 +217,4 @@ class UrunListeWindow(QWidget):
                     )
 
             QMessageBox.information(self, "Sepet", "Ürün sepete eklendi")
+
