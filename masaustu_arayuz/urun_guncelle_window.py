@@ -12,59 +12,35 @@ class UrunGuncelleWindow(QWidget):
         self.setFixedSize(350, 450)
 
         layout = QVBoxLayout()
-
-        # ÜRÜN ADI
         self.ad = QLineEdit(self.urun.get("ad", ""))
-
-        # FİYAT
         self.fiyat = QLineEdit(str(self.urun.get("fiyat", "")))
-
-        # STOK
         self.stok = QLineEdit(str(self.urun.get("stok", "")))
-
-        # TÜR
         self.tur = QLineEdit(self.urun.get("tur", ""))
-
-        # CİNSİYET
         self.cinsiyet = QComboBox()
         self.cinsiyet.addItems(["Kadın", "Erkek", "Unisex"])
         if self.urun.get("cinsiyet"):
             self.cinsiyet.setCurrentText(self.urun["cinsiyet"])
-
-        # RENK
         self.renk = QLineEdit(self.urun.get("renk", ""))
-
-        # ETİKETLER
         self.etiketler = QLineEdit(", ".join(self.urun.get("etiketler", [])))
-
-        # KAYDET BUTONU
         self.btn_kaydet = QPushButton("Kaydet")
         self.btn_kaydet.clicked.connect(self.kaydet)
 
-        # FORM
         layout.addWidget(QLabel("Ürün Adı"))
         layout.addWidget(self.ad)
-
         layout.addWidget(QLabel("Fiyat"))
         layout.addWidget(self.fiyat)
-
         layout.addWidget(QLabel("Stok"))
         layout.addWidget(self.stok)
-
         layout.addWidget(QLabel("Tür"))
         layout.addWidget(self.tur)
-
         layout.addWidget(QLabel("Cinsiyet"))
         layout.addWidget(self.cinsiyet)
-
         layout.addWidget(QLabel("Renk"))
         layout.addWidget(self.renk)
-
         layout.addWidget(QLabel("Etiketler (virgülle ayır)"))
         layout.addWidget(self.etiketler)
-
         layout.addWidget(self.btn_kaydet)
-
+        
         self.setLayout(layout)
 
     def kaydet(self):
@@ -82,4 +58,5 @@ class UrunGuncelleWindow(QWidget):
         )
 
         QMessageBox.information(self, "Başarılı", "Ürün güncellendi")
+
         self.close()
