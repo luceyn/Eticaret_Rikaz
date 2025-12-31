@@ -35,7 +35,6 @@ class SepetWindow(QWidget):
         self.yukle()
 
     def yukle(self):
-        # Temizle
         while self.layout.count():
             item = self.layout.takeAt(0)
             if item.widget():
@@ -55,7 +54,6 @@ class SepetWindow(QWidget):
             """)
             kart_layout = QHBoxLayout()
 
-            # Resim
             lbl_resim = QLabel()
             lbl_resim.setFixedSize(80, 80)
             if os.path.exists(urun["resim"]):
@@ -64,12 +62,10 @@ class SepetWindow(QWidget):
                 )
                 lbl_resim.setPixmap(pixmap)
 
-            # Bilgi
             lbl_bilgi = QLabel(
                 f'{urun["ad"]}\n{urun["fiyat"]} ₺ x {urun["adet"]}'
             )
 
-            # Sil
             btn_sil = QPushButton("Sil")
             btn_sil.clicked.connect(
                 lambda _, uid=urun["_id"]: self.sil(uid)
@@ -89,4 +85,5 @@ class SepetWindow(QWidget):
 
     def sil(self, urun_id):
         sepet.delete_one({"_id": urun_id})
+
         self.yukle()
