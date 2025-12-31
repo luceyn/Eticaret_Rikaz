@@ -8,8 +8,6 @@ from masaustu_arayuz.urun_liste_window import UrunListeWindow
 from masaustu_arayuz.urun_ekle_window import UrunEkleWindow
 from masaustu_arayuz.sepet_window import SepetWindow
 
-
-
 class MainWindow(QMainWindow):
     def __init__(self, user, login_window):
         super().__init__()
@@ -25,8 +23,6 @@ class MainWindow(QMainWindow):
         ana_widget = QWidget()
         ana_layout = QHBoxLayout()
         ana_layout.setContentsMargins(0, 0, 0, 0)
-
-        # 🔹 YAN MENÜ
         self.menu = QFrame()
         self.menu.setFixedWidth(0)
         self.menu.setStyleSheet("""
@@ -45,7 +41,6 @@ class MainWindow(QMainWindow):
                 background-color: #444;
             }
         """)
-
         menu_layout = QVBoxLayout()
 
         self.btn_urunler = QPushButton("🛒 Ürünler")
@@ -54,22 +49,16 @@ class MainWindow(QMainWindow):
         self.btn_cikis.clicked.connect(self.cikis_yap)
         self.btn_sepet.clicked.connect(self.sepet_ac)
 
-
         menu_layout.addWidget(self.btn_urunler)
         menu_layout.addWidget(self.btn_sepet)
         menu_layout.addStretch()
         menu_layout.addWidget(self.btn_cikis)
 
         self.menu.setLayout(menu_layout)
-
-        # 🔹 SAĞ TARAF (İÇERİK)
         self.icerik = QStackedWidget()
-
-        # 🔹 ÜRÜN LİSTE SAYFASI
         self.urun_liste_sayfa = UrunListeWindow(self.user)
         self.icerik.addWidget(self.urun_liste_sayfa)
 
-        # 🔹 ÜST BAR
         self.btn_menu = QPushButton("☰")
         self.btn_menu.setFixedSize(40, 40)
         self.btn_menu.clicked.connect(self.menu_toggle)
@@ -81,7 +70,6 @@ class MainWindow(QMainWindow):
 
         if self.user.get("role") == "admin":
            self.btn_urun_ekle.clicked.connect(self.urun_ekle_ac)
-    
 
         ust_bar = QHBoxLayout()
         ust_bar.addWidget(self.btn_menu)
@@ -97,7 +85,6 @@ class MainWindow(QMainWindow):
         ana_widget.setLayout(ana_layout)
         self.setCentralWidget(ana_widget)
 
-        # 🔹 BAĞLANTILAR
         self.btn_urunler.clicked.connect(self.urunleri_goster)
         self.btn_cikis.clicked.connect(self.close)
 
@@ -127,4 +114,5 @@ class MainWindow(QMainWindow):
 
     def sepet_ac(self):
         self.sepet_pencere= SepetWindow(self.user)
+
         self.sepet_pencere.show()
